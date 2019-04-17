@@ -20,18 +20,35 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = User.find(params[:id])
   end
 
   # POST /users
   # POST /users.json
   def create
-    #complete this method
+    @user = User.new(user_params)
+    if @user.save
+      flash.now[:notice] = "User successfully saved."
+      redirect_to @user
+    else
+      # This line overrides the default rendering behavior, which
+      # would have been to render the "create" view.
+      flash.now[:error] = "Could not save user."
+      render "new"
+    end
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    #complete this method
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      flash.now[:notice] = "User successfully updated."
+      redirect_to @user
+    else
+      flash.now[:error] = "Could not update user."
+      render "edit"
+    end
   end
 
   # DELETE /users/1
